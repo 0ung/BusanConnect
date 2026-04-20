@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.manus
+.manus-logs
+.vite-stdout.log
+.vite-stderr.log
+Dockerfile
+docker-compose.yml

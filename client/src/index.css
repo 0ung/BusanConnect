@@ -1,0 +1,837 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+@import "@radix-ui/colors/slate.css";
+@import "@radix-ui/colors/slate-dark.css";
+@import "@radix-ui/colors/slate-alpha.css";
+@import "@radix-ui/colors/slate-dark-alpha.css";
+@import "@radix-ui/colors/blue.css";
+@import "@radix-ui/colors/blue-dark.css";
+@import "@radix-ui/colors/amber.css";
+@import "@radix-ui/colors/amber-dark.css";
+@import "@radix-ui/colors/tomato.css";
+@import "@radix-ui/colors/tomato-dark.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-display: var(--display-font);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-cream: var(--cream);
+  --color-navy: var(--navy);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-light: var(--gold-light);
+  --color-ocean: var(--ocean);
+  --color-ocean-dark: var(--ocean-dark);
+  --color-ocean-light: var(--ocean-light);
+  --color-sky: var(--sky);
+  --color-sky-light: var(--sky-light);
+}
+
+:root {
+  --radius: 0.6rem;
+  --display-font: "Playfair Display", "Noto Serif KR", Georgia, serif;
+  color-scheme: light;
+  --background: var(--slate-1);
+  --foreground: var(--slate-12);
+  --card: #ffffff;
+  --card-foreground: var(--slate-12);
+  --popover: #ffffff;
+  --popover-foreground: var(--slate-12);
+  --primary: var(--blue-9);
+  --primary-foreground: #ffffff;
+  --secondary: color-mix(in oklch, var(--slate-3) 88%, white 12%);
+  --secondary-foreground: var(--slate-12);
+  --muted: color-mix(in oklch, var(--slate-2) 90%, var(--blue-2) 10%);
+  --muted-foreground: var(--slate-11);
+  --accent: color-mix(in oklch, var(--blue-3) 82%, var(--card) 18%);
+  --accent-foreground: var(--slate-12);
+  --destructive: var(--tomato-9);
+  --destructive-foreground: #ffffff;
+  --border: color-mix(in oklch, var(--slate-6) 84%, var(--blue-6) 16%);
+  --input: color-mix(in oklch, var(--slate-5) 82%, var(--blue-4) 18%);
+  --ring: var(--blue-8);
+  --chart-1: var(--blue-9);
+  --chart-2: var(--amber-9);
+  --chart-3: var(--tomato-9);
+  --chart-4: var(--blue-11);
+  --chart-5: var(--slate-8);
+  --sidebar: color-mix(in oklch, white 92%, var(--slate-2) 8%);
+  --sidebar-foreground: var(--slate-12);
+  --sidebar-primary: var(--blue-9);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: color-mix(in oklch, var(--blue-4) 72%, white 28%);
+  --sidebar-accent-foreground: var(--slate-12);
+  --sidebar-border: color-mix(in oklch, var(--slate-6) 88%, var(--blue-6) 12%);
+  --sidebar-ring: var(--blue-8);
+  --cream: var(--slate-1);
+  --navy: var(--slate-12);
+  --brand-deep: var(--blue-12);
+  --brand-foreground: #ffffff;
+  --gold: var(--amber-9);
+  --gold-dark: var(--amber-11);
+  --gold-light: var(--amber-3);
+  --ocean: var(--blue-9);
+  --ocean-light: var(--blue-10);
+  --ocean-dark: var(--blue-11);
+  --sky: var(--amber-8);
+  --sky-light: var(--amber-3);
+  --white: #ffffff;
+  --light-gray: var(--slate-3);
+  --surface-muted: color-mix(in oklch, var(--slate-2) 78%, var(--blue-2) 22%);
+  --surface-muted-hover: color-mix(in oklch, var(--slate-3) 56%, var(--amber-3) 44%);
+  --surface-card-shadow: 0 16px 40px var(--slate-a3);
+  --surface-card-shadow-strong: 0 24px 56px var(--slate-a4);
+  --focus-outline: color-mix(in oklch, var(--ring) 40%, transparent);
+  --field-surface: color-mix(in oklch, var(--card) 86%, var(--blue-2) 14%);
+  --field-surface-hover: color-mix(in oklch, var(--card) 72%, var(--blue-2) 28%);
+  --panel-surface: color-mix(in oklch, var(--card) 94%, var(--background) 6%);
+  --panel-surface-strong: color-mix(in oklch, var(--card) 84%, var(--blue-2) 16%);
+  --border-strong: color-mix(in oklch, var(--blue-7) 28%, var(--border) 72%);
+  --hero-overlay: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--brand-deep) 58%, transparent) 0%,
+    color-mix(in oklch, var(--brand-deep) 42%, transparent) 42%,
+    color-mix(in oklch, black 50%, transparent) 100%
+  );
+}
+
+.dark {
+  color-scheme: dark;
+  --background: var(--slate-1);
+  --foreground: var(--slate-12);
+  --card: var(--slate-2);
+  --card-foreground: var(--slate-12);
+  --popover: var(--slate-2);
+  --popover-foreground: var(--slate-12);
+  --primary: var(--blue-9);
+  --primary-foreground: #ffffff;
+  --secondary: color-mix(in oklch, var(--slate-3) 82%, var(--slate-4) 18%);
+  --secondary-foreground: var(--slate-12);
+  --muted: color-mix(in oklch, var(--slate-3) 84%, var(--blue-2) 16%);
+  --muted-foreground: var(--slate-11);
+  --accent: color-mix(in oklch, var(--blue-4) 58%, var(--card) 42%);
+  --accent-foreground: var(--slate-12);
+  --destructive: var(--tomato-9);
+  --destructive-foreground: #ffffff;
+  --border: color-mix(in oklch, var(--slate-6) 72%, var(--blue-6) 28%);
+  --input: color-mix(in oklch, var(--slate-4) 72%, var(--blue-4) 28%);
+  --ring: var(--blue-10);
+  --chart-1: var(--blue-9);
+  --chart-2: var(--amber-9);
+  --chart-3: var(--tomato-9);
+  --chart-4: var(--blue-11);
+  --chart-5: var(--slate-8);
+  --sidebar: color-mix(in oklch, var(--slate-2) 94%, black 6%);
+  --sidebar-foreground: var(--slate-12);
+  --sidebar-primary: var(--blue-9);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: color-mix(in oklch, var(--blue-4) 62%, var(--card) 38%);
+  --sidebar-accent-foreground: var(--slate-12);
+  --sidebar-border: color-mix(in oklch, var(--slate-6) 76%, var(--blue-6) 24%);
+  --sidebar-ring: var(--blue-10);
+  --cream: var(--slate-1);
+  --navy: var(--slate-12);
+  --brand-deep: var(--blue-4);
+  --brand-foreground: #ffffff;
+  --gold: var(--amber-9);
+  --gold-dark: var(--amber-11);
+  --gold-light: var(--amber-4);
+  --ocean: var(--blue-9);
+  --ocean-light: var(--blue-11);
+  --ocean-dark: var(--blue-11);
+  --sky: var(--amber-10);
+  --sky-light: var(--amber-4);
+  --white: #ffffff;
+  --light-gray: var(--slate-4);
+  --surface-muted: color-mix(in oklch, var(--slate-3) 78%, var(--blue-3) 22%);
+  --surface-muted-hover: color-mix(in oklch, var(--slate-4) 56%, var(--amber-3) 44%);
+  --surface-card-shadow: 0 18px 48px rgb(0 0 0 / 0.34);
+  --surface-card-shadow-strong: 0 24px 64px rgb(0 0 0 / 0.42);
+  --focus-outline: color-mix(in oklch, var(--ring) 48%, transparent);
+  --field-surface: color-mix(in oklch, var(--card) 84%, var(--blue-3) 16%);
+  --field-surface-hover: color-mix(in oklch, var(--card) 68%, var(--blue-3) 32%);
+  --panel-surface: color-mix(in oklch, var(--card) 94%, black 6%);
+  --panel-surface-strong: color-mix(in oklch, var(--card) 78%, var(--blue-3) 22%);
+  --border-strong: color-mix(in oklch, var(--blue-8) 34%, var(--border) 66%);
+  --hero-overlay: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--brand-deep) 62%, transparent) 0%,
+    color-mix(in oklch, var(--brand-deep) 46%, transparent) 42%,
+    color-mix(in oklch, black 58%, transparent) 100%
+  );
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    background: var(--background);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Noto Sans KR", "Noto Sans JP", "Noto Sans SC", "Inter", sans-serif;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  .ui-card-chrome {
+    background: linear-gradient(180deg, color-mix(in oklch, var(--panel-surface) 94%, white 6%), var(--panel-surface));
+    border: 1px solid color-mix(in oklch, var(--border-strong) 78%, var(--border) 22%);
+    box-shadow:
+      var(--surface-card-shadow),
+      inset 0 1px 0 color-mix(in oklch, var(--white) 48%, transparent);
+  }
+
+  .ui-button-primary {
+    background: var(--primary);
+    border: 1px solid color-mix(in oklch, var(--blue-10) 56%, var(--blue-8) 44%);
+    color: var(--primary-foreground);
+    box-shadow: 0 8px 20px color-mix(in oklch, var(--blue-9) 18%, transparent);
+  }
+
+  .ui-button-primary:hover {
+    transform: translateY(-1px);
+    background: color-mix(in oklch, var(--primary) 88%, black 12%);
+    box-shadow: 0 12px 24px color-mix(in oklch, var(--blue-9) 22%, transparent);
+  }
+
+  .ui-button-secondary {
+    background: color-mix(in oklch, var(--secondary) 82%, var(--card) 18%);
+    border: 1px solid color-mix(in oklch, var(--border-strong) 44%, var(--border) 56%);
+    color: var(--secondary-foreground);
+  }
+
+  .ui-button-secondary:hover {
+    background: color-mix(in oklch, var(--secondary) 68%, var(--card) 32%);
+  }
+
+  .ui-button-outline {
+    background: color-mix(in oklch, var(--card) 82%, transparent);
+    border: 1px solid var(--border-strong);
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 color-mix(in oklch, var(--white) 42%, transparent);
+  }
+
+  .ui-button-outline:hover,
+  .ui-button-ghost:hover {
+    background: color-mix(in oklch, var(--accent) 78%, transparent);
+    color: var(--foreground);
+  }
+
+  .ui-button-ghost {
+    color: var(--foreground);
+  }
+
+  .ui-button-link {
+    color: var(--ocean-dark);
+  }
+
+  .ui-button-link:hover {
+    color: var(--ocean);
+  }
+
+  .ui-button-destructive {
+    background: var(--tomato-9);
+    border: 1px solid color-mix(in oklch, var(--tomato-10) 58%, var(--tomato-8) 42%);
+    color: var(--destructive-foreground);
+    box-shadow: 0 8px 18px color-mix(in oklch, var(--tomato-9) 18%, transparent);
+  }
+
+  .ui-button-destructive:hover {
+    transform: translateY(-1px);
+    background: color-mix(in oklch, var(--tomato-9) 88%, black 12%);
+  }
+
+  .hero-button-primary {
+    box-shadow: 0 20px 44px color-mix(in oklch, var(--brand-deep) 24%, transparent);
+  }
+
+  .hero-button-primary:hover {
+    box-shadow: 0 26px 54px color-mix(in oklch, var(--brand-deep) 30%, transparent);
+  }
+
+  .hero-button-outline {
+    background: color-mix(in oklch, var(--brand-deep) 18%, transparent);
+    border: 1px solid color-mix(in oklch, var(--white) 22%, transparent);
+    color: var(--white);
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 1px 0 color-mix(in oklch, var(--white) 18%, transparent);
+  }
+
+  .hero-button-outline:hover {
+    background: color-mix(in oklch, var(--white) 12%, transparent);
+    border-color: color-mix(in oklch, var(--gold-light) 24%, transparent);
+    color: var(--white);
+  }
+
+  .ui-badge-primary {
+    background: linear-gradient(135deg, color-mix(in oklch, var(--blue-9) 92%, white 8%), var(--blue-10));
+    color: var(--primary-foreground);
+    border-color: transparent;
+  }
+
+  .ui-badge-secondary {
+    background: linear-gradient(135deg, color-mix(in oklch, var(--gold-light) 52%, var(--card) 48%), color-mix(in oklch, var(--blue-3) 22%, var(--card) 78%));
+    color: var(--foreground);
+    border-color: color-mix(in oklch, var(--gold) 16%, var(--border) 84%);
+  }
+
+  .ui-badge-outline {
+    background: color-mix(in oklch, var(--card) 74%, transparent);
+    color: var(--foreground);
+    border-color: var(--border-strong);
+  }
+
+  .ui-badge-destructive {
+    background: linear-gradient(135deg, var(--tomato-9), var(--tomato-10));
+    color: var(--destructive-foreground);
+    border-color: transparent;
+  }
+
+  .ui-input-chrome {
+    background: var(--field-surface);
+    border-color: color-mix(in oklch, var(--border-strong) 76%, var(--border) 24%);
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 color-mix(in oklch, var(--white) 44%, transparent);
+  }
+
+  .ui-input-chrome:hover {
+    background: var(--field-surface-hover);
+  }
+
+  .ui-input-chrome:focus-visible {
+    border-color: var(--ring);
+    box-shadow:
+      0 0 0 3px var(--focus-outline),
+      inset 0 1px 0 color-mix(in oklch, var(--white) 42%, transparent);
+  }
+
+  .ui-tabs-list {
+    background: linear-gradient(180deg, color-mix(in oklch, var(--secondary) 86%, var(--card) 14%), color-mix(in oklch, var(--muted) 88%, var(--card) 12%));
+    border: 1px solid color-mix(in oklch, var(--border-strong) 72%, var(--border) 28%);
+    box-shadow: inset 0 1px 0 color-mix(in oklch, var(--white) 36%, transparent);
+  }
+
+  .ui-tabs-trigger {
+    color: var(--muted-foreground);
+  }
+
+  .ui-tabs-trigger:hover {
+    color: var(--foreground);
+    background: color-mix(in oklch, var(--accent) 78%, transparent);
+  }
+
+  .ui-tabs-trigger[data-state="active"] {
+    background: linear-gradient(180deg, color-mix(in oklch, var(--card) 90%, var(--blue-2) 10%), color-mix(in oklch, var(--card) 82%, var(--amber-2) 18%));
+    border-color: color-mix(in oklch, var(--blue-7) 24%, var(--border) 76%);
+    color: var(--foreground);
+    box-shadow: 0 8px 22px color-mix(in oklch, var(--slate-a8) 10%, transparent);
+  }
+}
+
+.text-ocean { color: var(--ocean); }
+.text-ocean-dark { color: var(--ocean-dark); }
+.text-sky { color: var(--sky); }
+.bg-ocean { background-color: var(--ocean); }
+.bg-sky { background-color: var(--sky); }
+.bg-white { background-color: var(--white); }
+.border-ocean { border-color: var(--ocean); }
+
+.text-gradient-ocean {
+  background: linear-gradient(135deg, var(--ocean), var(--ocean-light), var(--ocean-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-busan {
+  border: 1px solid color-mix(in oklch, var(--ocean) 14%, var(--border) 86%);
+  background: color-mix(in oklch, var(--card) 96%, var(--background) 4%);
+  box-shadow: 0 10px 28px oklch(33% 0.048 241 / 0.05);
+  transition: all 0.3s ease;
+}
+
+.card-busan:hover {
+  border-color: var(--ocean);
+  box-shadow: 0 18px 40px color-mix(in oklch, var(--ocean) 20%, transparent);
+  transform: translateY(-2px);
+}
+
+.card-sacred {
+  border: 1px solid color-mix(in oklch, var(--ocean) 12%, var(--border) 88%);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--card) 96%, var(--ocean-light) 4%),
+      color-mix(in oklch, var(--card) 90%, var(--gold-light) 10%)
+    );
+  box-shadow:
+    var(--surface-card-shadow),
+    inset 0 1px 0 color-mix(in oklch, var(--white) 72%, transparent);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.card-sacred:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklch, var(--ocean) 24%, var(--border) 76%);
+  box-shadow:
+    0 20px 48px color-mix(in oklch, var(--navy) 12%, transparent),
+    0 0 0 1px color-mix(in oklch, var(--ocean) 18%, transparent);
+}
+
+.page-shell {
+  background: linear-gradient(180deg, color-mix(in oklch, var(--cream) 90%, var(--background) 10%), var(--background));
+  color: var(--foreground);
+}
+
+.section-brand {
+  background:
+    radial-gradient(circle at 14% 22%, color-mix(in oklch, var(--white) 8%, transparent), transparent 22%),
+    linear-gradient(180deg, color-mix(in oklch, var(--brand-deep) 90%, black 10%), color-mix(in oklch, var(--brand-deep) 82%, black 18%));
+  color: var(--white);
+}
+
+.surface-panel {
+  background: color-mix(in oklch, var(--panel-surface) 90%, transparent);
+  border-bottom: 1px solid color-mix(in oklch, var(--border-strong) 72%, var(--border) 28%);
+  box-shadow: 0 10px 26px var(--slate-a3);
+  backdrop-filter: blur(18px);
+}
+
+.surface-card {
+  background: linear-gradient(180deg, color-mix(in oklch, var(--panel-surface) 94%, white 6%), var(--panel-surface));
+  border: 1px solid color-mix(in oklch, var(--border-strong) 78%, var(--border) 22%);
+  box-shadow: var(--surface-card-shadow);
+}
+
+.surface-card-hover {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.surface-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklch, var(--blue-8) 28%, var(--border) 72%);
+  box-shadow: var(--surface-card-shadow-strong);
+}
+
+.hero-ocean-overlay { background: var(--hero-overlay); }
+.hero-bottom-fade { background: linear-gradient(to top, var(--cream), transparent); }
+
+.hero-chip {
+  border: 1px solid color-mix(in oklch, var(--white) 20%, transparent);
+  background: color-mix(in oklch, var(--brand-deep) 66%, transparent);
+  color: color-mix(in oklch, var(--white) 92%, var(--ocean-light) 8%);
+  backdrop-filter: blur(8px);
+}
+
+.feature-icon-shell {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--ocean-light) 56%, var(--card) 44%), color-mix(in oklch, var(--gold-light) 24%, var(--card) 76%));
+  color: var(--ocean-dark);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.group:hover .feature-icon-shell {
+  background: var(--brand-deep);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.icon-orb-brand {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--brand-deep) 84%, black 16%), color-mix(in oklch, var(--ocean) 80%, var(--brand-deep) 20%));
+  color: var(--white);
+  box-shadow: 0 14px 28px color-mix(in oklch, var(--ocean) 18%, transparent);
+}
+
+.avatar-shell-brand {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--brand-deep) 88%, black 12%), color-mix(in oklch, var(--ocean) 70%, var(--brand-deep) 30%));
+  color: var(--white);
+  box-shadow: 0 10px 22px color-mix(in oklch, var(--ocean) 14%, transparent);
+}
+
+.badge-soft {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--gold-light) 72%, var(--card) 28%), color-mix(in oklch, var(--ocean-light) 26%, var(--card) 74%));
+  color: var(--navy);
+  border: 1px solid color-mix(in oklch, var(--gold) 20%, var(--border) 80%);
+}
+
+.soft-pill {
+  background: color-mix(in oklch, var(--secondary) 78%, var(--card) 22%);
+  color: color-mix(in oklch, var(--foreground) 78%, var(--muted-foreground) 22%);
+  border: 1px solid color-mix(in oklch, var(--border) 88%, var(--gold) 12%);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.soft-pill:hover {
+  background: var(--surface-muted-hover);
+  border-color: color-mix(in oklch, var(--ocean) 16%, var(--border) 84%);
+}
+
+.soft-pill-active {
+  background: var(--brand-deep);
+  color: var(--white);
+  border-color: color-mix(in oklch, var(--ocean-light) 22%, transparent);
+  box-shadow: 0 8px 18px color-mix(in oklch, var(--ocean) 14%, transparent);
+}
+
+.tag-pill {
+  background: color-mix(in oklch, var(--ocean-light) 32%, var(--card) 68%);
+  color: var(--ocean-dark);
+  border: 1px solid color-mix(in oklch, var(--ocean) 16%, var(--border) 84%);
+}
+
+.text-subtle {
+  color: color-mix(in oklch, var(--foreground) 72%, var(--muted-foreground) 28%);
+}
+
+.text-muted { color: var(--muted-foreground); }
+.text-contrast { color: var(--white); }
+.text-hero-muted { color: rgb(236 244 255 / 0.92); }
+
+.nav-shell {
+  background: color-mix(in oklch, var(--panel-surface) 92%, transparent);
+  border-bottom: 1px solid color-mix(in oklch, var(--border-strong) 70%, var(--border) 30%);
+  box-shadow: 0 10px 24px var(--slate-a3);
+  backdrop-filter: blur(18px);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--foreground);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.nav-link:hover {
+  background: color-mix(in oklch, var(--ocean-light) 14%, var(--card) 86%);
+  color: var(--navy);
+}
+
+.nav-link-active {
+  background: color-mix(in oklch, var(--ocean-light) 20%, var(--card) 80%);
+  color: var(--navy);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--ocean) 14%, transparent);
+}
+
+.theme-toggle {
+  border: 1px solid color-mix(in oklch, var(--blue-7) 18%, var(--border) 82%);
+  background: color-mix(in oklch, var(--panel-surface) 86%, transparent);
+  color: var(--foreground);
+}
+
+.theme-toggle:hover {
+  background: color-mix(in oklch, var(--ocean-light) 14%, var(--card) 86%);
+  color: var(--navy);
+}
+
+.footer-shell {
+  background:
+    linear-gradient(180deg, color-mix(in oklch, var(--brand-deep) 92%, black 8%), color-mix(in oklch, var(--brand-deep) 72%, black 28%));
+  color: var(--white);
+  border-top: 1px solid color-mix(in oklch, var(--gold) 16%, var(--brand-deep) 84%);
+}
+
+.footer-link {
+  color: color-mix(in oklch, var(--white) 72%, var(--gold-light) 28%);
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover { color: var(--gold-light); }
+.footer-copy { color: color-mix(in oklch, var(--white) 58%, var(--gold-light) 18%); }
+
+.brand-logo-ring {
+  stop-color: #5b98ff;
+}
+
+.brand-logo-core {
+  stop-color: #0066ff;
+}
+
+.info-panel {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--blue-3) 42%, var(--card) 58%), color-mix(in oklch, var(--amber-2) 16%, var(--card) 84%));
+  border: 1px solid color-mix(in oklch, var(--blue-7) 18%, var(--border) 82%);
+  color: var(--foreground);
+}
+
+.notice-panel {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--gold-light) 52%, var(--card) 48%), color-mix(in oklch, var(--blue-2) 12%, var(--card) 88%));
+  border: 1px solid color-mix(in oklch, var(--gold) 20%, var(--border) 80%);
+  color: var(--foreground);
+}
+
+.danger-panel {
+  background: color-mix(in oklch, var(--destructive) 10%, var(--card) 90%);
+  border: 1px solid color-mix(in oklch, var(--destructive) 18%, var(--border) 82%);
+  color: var(--foreground);
+}
+
+.danger-soft-button {
+  background: color-mix(in oklch, var(--destructive) 10%, var(--card) 90%);
+  color: var(--destructive);
+  border: 1px solid color-mix(in oklch, var(--destructive) 20%, var(--border) 80%);
+}
+
+.danger-soft-button:hover {
+  background: color-mix(in oklch, var(--destructive) 16%, var(--card) 84%);
+}
+
+.timeline-step {
+  background: linear-gradient(135deg, var(--brand-deep), var(--ocean));
+  color: var(--white);
+  box-shadow: 0 10px 22px color-mix(in oklch, var(--ocean) 18%, transparent);
+}
+
+.soft-section {
+  background: linear-gradient(180deg, color-mix(in oklch, var(--background) 74%, var(--card) 26%), color-mix(in oklch, var(--gold-light) 16%, var(--card) 84%));
+  border: 1px solid color-mix(in oklch, var(--blue-6) 14%, var(--border) 86%);
+}
+
+.panel-header-soft {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--blue-3) 54%, var(--card) 46%), color-mix(in oklch, var(--gold-light) 20%, var(--card) 80%));
+  border-bottom: 1px solid color-mix(in oklch, var(--border-strong) 72%, var(--border) 28%);
+}
+
+.panel-header-brand {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--brand-deep) 86%, black 14%), color-mix(in oklch, var(--ocean) 78%, var(--brand-deep) 22%));
+  color: var(--white);
+}
+
+.brand-button {
+  background: var(--brand-deep);
+  color: var(--white);
+  border: 1px solid color-mix(in oklch, var(--brand-deep) 72%, black 28%);
+  box-shadow: 0 8px 20px color-mix(in oklch, var(--brand-deep) 16%, transparent);
+}
+
+.brand-button:hover {
+  background: color-mix(in oklch, var(--brand-deep) 88%, black 12%);
+}
+
+.secondary-button {
+  background: color-mix(in oklch, var(--secondary) 82%, var(--card) 18%);
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklch, var(--blue-6) 10%, var(--border) 90%);
+}
+
+.secondary-button:hover {
+  background: color-mix(in oklch, var(--ocean-light) 14%, var(--card) 86%);
+}
+
+.map-fallback {
+  background: linear-gradient(180deg, color-mix(in oklch, var(--card) 86%, var(--background) 14%), color-mix(in oklch, var(--ocean-light) 16%, var(--card) 84%));
+  color: var(--muted-foreground);
+  border: 1px solid color-mix(in oklch, var(--ocean) 12%, var(--border) 88%);
+}
+
+.category-review {
+  background: color-mix(in oklch, var(--gold-light) 78%, var(--card) 22%);
+  color: var(--gold-dark);
+  border: 1px solid color-mix(in oklch, var(--gold) 18%, var(--border) 82%);
+}
+
+.category-question {
+  background: color-mix(in oklch, var(--ocean-light) 72%, var(--card) 28%);
+  color: var(--ocean-dark);
+  border: 1px solid color-mix(in oklch, var(--ocean) 16%, var(--border) 84%);
+}
+
+.category-tip {
+  background: color-mix(in oklch, var(--sky-light) 72%, var(--card) 28%);
+  color: color-mix(in oklch, var(--ocean-dark) 82%, var(--navy) 18%);
+  border: 1px solid color-mix(in oklch, var(--sky) 14%, var(--border) 86%);
+}
+
+.category-general {
+  background: color-mix(in oklch, var(--secondary) 84%, var(--card) 16%);
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklch, var(--border) 88%, var(--gold) 12%);
+}
+
+.guide-attraction {
+  background: color-mix(in oklch, var(--ocean-light) 70%, var(--card) 30%);
+  color: var(--ocean-dark);
+  border: 1px solid color-mix(in oklch, var(--ocean) 15%, var(--border) 85%);
+}
+
+.guide-restaurant {
+  background: color-mix(in oklch, var(--gold-light) 74%, var(--card) 26%);
+  color: var(--gold-dark);
+  border: 1px solid color-mix(in oklch, var(--gold) 18%, var(--border) 82%);
+}
+
+.guide-accommodation {
+  background: color-mix(in oklch, var(--sky-light) 70%, var(--card) 30%);
+  color: color-mix(in oklch, var(--navy) 72%, var(--ocean-dark) 28%);
+  border: 1px solid color-mix(in oklch, var(--sky) 14%, var(--border) 86%);
+}
+
+.guide-shopping {
+  background: color-mix(in oklch, var(--secondary) 70%, var(--gold-light) 30%);
+  color: var(--navy);
+  border: 1px solid color-mix(in oklch, var(--gold) 14%, var(--border) 86%);
+}
+
+.guide-culture {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--ocean-light) 54%, var(--card) 46%), color-mix(in oklch, var(--gold-light) 56%, var(--card) 44%));
+  color: var(--ocean-dark);
+  border: 1px solid color-mix(in oklch, var(--gold) 16%, var(--border) 84%);
+}
+
+.dark .bg-white { background-color: color-mix(in oklch, var(--card) 95%, var(--background) 5%); }
+.dark .bg-white\/80 { background-color: color-mix(in oklch, var(--card) 78%, transparent); }
+.dark .bg-gray-100 { background-color: color-mix(in oklch, var(--secondary) 76%, var(--background) 24%); }
+.dark .bg-gray-200 { background-color: color-mix(in oklch, var(--secondary) 86%, black 14%); }
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300 { border-color: color-mix(in oklch, var(--border) 90%, white 10%); }
+.dark .text-gray-400 { color: color-mix(in oklch, var(--muted-foreground) 86%, white 14%); }
+.dark .text-gray-500 { color: var(--muted-foreground); }
+.dark .text-gray-600,
+.dark .text-gray-700 { color: color-mix(in oklch, var(--foreground) 72%, var(--muted-foreground) 28%); }
+.dark .text-gray-800 { color: var(--foreground); }
+.dark .hover\:bg-gray-50:hover { background-color: color-mix(in oklch, var(--secondary) 80%, var(--background) 20%); }
+.dark .hover\:bg-gray-200:hover { background-color: color-mix(in oklch, var(--secondary) 92%, black 8%); }
+.dark .bg-gray-50 { background-color: color-mix(in oklch, var(--secondary) 74%, var(--background) 26%); }
+.dark .bg-blue-100 { background-color: color-mix(in oklch, var(--ocean-light) 22%, var(--card) 78%); }
+.dark .bg-blue-50 { background-color: color-mix(in oklch, var(--ocean-light) 14%, var(--card) 86%); }
+.dark .border-blue-200 { border-color: color-mix(in oklch, var(--ocean) 26%, var(--border) 74%); }
+.dark .text-blue-100 { color: color-mix(in oklch, var(--white) 84%, var(--ocean-light) 16%); }
+.dark .text-blue-700 { color: color-mix(in oklch, var(--ocean-light) 58%, white 42%); }
+.dark .bg-green-100 { background-color: color-mix(in oklch, oklch(78% 0.09 150) 18%, var(--card) 82%); }
+.dark .text-green-700 { color: oklch(83% 0.08 150); }
+.dark .bg-yellow-100 { background-color: color-mix(in oklch, oklch(86% 0.09 95) 20%, var(--card) 80%); }
+.dark .text-yellow-700 { color: oklch(88% 0.08 95); }
+.dark .bg-red-100 { background-color: color-mix(in oklch, oklch(70% 0.17 28) 18%, var(--card) 82%); }
+.dark .text-red-700 { color: oklch(82% 0.09 28); }
+.dark .text-red-500 { color: oklch(78% 0.11 28); }
+.dark .text-gray-900 { color: var(--foreground); }
+
+@keyframes busan-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes busan-pulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.3; }
+}
+
+.busan-rotate { animation: busan-rotate 120s linear infinite; }
+.busan-pulse { animation: busan-pulse 8s ease-in-out infinite; }
+.sacred-rotate { animation: busan-rotate 120s linear infinite; }
+.sacred-pulse { animation: busan-pulse 8s ease-in-out infinite; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: color-mix(in oklch, var(--background) 92%, var(--card) 8%); }
+::-webkit-scrollbar-thumb { background: var(--ocean); border-radius: 3px; }
