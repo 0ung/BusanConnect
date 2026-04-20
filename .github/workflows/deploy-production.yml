@@ -48,21 +48,15 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
 
-      - name: Trust remote host
-        env:
-          OCI_HOST: ${{ secrets.OCI_HOST }}
-          OCI_PORT: ${{ secrets.OCI_PORT }}
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p "${OCI_PORT}" -H "${OCI_HOST}" >> ~/.ssh/known_hosts
-
       - name: Upload tracked source
         env:
           OCI_HOST: ${{ secrets.OCI_HOST }}
           OCI_PORT: ${{ secrets.OCI_PORT }}
           OCI_USER: ${{ secrets.OCI_USER }}
         run: |
-          git archive --format=tar HEAD | ssh -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" '
+          SSH_OPTIONS="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=15"
+
+          git archive --format=tar HEAD | ssh ${SSH_OPTIONS} -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" '
             set -eu
             APP_DIR="$HOME/apps/BusanConnect"
             rm -rf "$APP_DIR"
@@ -86,8 +80,9 @@ jobs:
 
           KEY_B64="$(printf '%s' "${FORGE_API_KEY}" | base64 -w 0)"
           URL_B64="$(printf '%s' "${DEPLOY_FORGE_URL}" | base64 -w 0)"
+          SSH_OPTIONS="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=15"
 
-          ssh -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" "
+          ssh ${SSH_OPTIONS} -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" "
             set -eu
             cd ~/apps/BusanConnect
             export VITE_FRONTEND_FORGE_API_KEY=\$(printf '%s' '${KEY_B64}' | base64 -d)
