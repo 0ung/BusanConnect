@@ -1,0 +1,98 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm check
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
+
+      - name: Trust remote host
+        env:
+          OCI_HOST: ${{ secrets.OCI_HOST }}
+          OCI_PORT: ${{ secrets.OCI_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${OCI_PORT}" -H "${OCI_HOST}" >> ~/.ssh/known_hosts
+
+      - name: Upload tracked source
+        env:
+          OCI_HOST: ${{ secrets.OCI_HOST }}
+          OCI_PORT: ${{ secrets.OCI_PORT }}
+          OCI_USER: ${{ secrets.OCI_USER }}
+        run: |
+          git archive --format=tar HEAD | ssh -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" '
+            set -eu
+            APP_DIR="$HOME/apps/BusanConnect"
+            rm -rf "$APP_DIR"
+            mkdir -p "$APP_DIR"
+            tar -xf - -C "$APP_DIR"
+          '
+
+      - name: Deploy on OCI
+        env:
+          OCI_HOST: ${{ secrets.OCI_HOST }}
+          OCI_PORT: ${{ secrets.OCI_PORT }}
+          OCI_USER: ${{ secrets.OCI_USER }}
+          FORGE_API_KEY: ${{ secrets.VITE_FRONTEND_FORGE_API_KEY }}
+          FORGE_API_URL: ${{ secrets.VITE_FRONTEND_FORGE_API_URL }}
+        run: |
+          if [ -n "${FORGE_API_URL}" ]; then
+            DEPLOY_FORGE_URL="${FORGE_API_URL}"
+          else
+            DEPLOY_FORGE_URL="https://forge.butterfly-effect.dev"
+          fi
+
+          KEY_B64="$(printf '%s' "${FORGE_API_KEY}" | base64 -w 0)"
+          URL_B64="$(printf '%s' "${DEPLOY_FORGE_URL}" | base64 -w 0)"
+
+          ssh -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" "
+            set -eu
+            cd ~/apps/BusanConnect
+            export VITE_FRONTEND_FORGE_API_KEY=\$(printf '%s' '${KEY_B64}' | base64 -d)
+            export VITE_FRONTEND_FORGE_API_URL=\$(printf '%s' '${URL_B64}' | base64 -d)
+            sh scripts/deploy-remote.sh
+          "
