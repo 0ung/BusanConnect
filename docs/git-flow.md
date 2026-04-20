@@ -20,6 +20,8 @@
 
 - CI runs on `main`, `develop`, `feature/*`, `release/*`, and `hotfix/*`.
 - Production deployment runs only from `main`.
+- Production deployment builds the Docker image once in GitHub Actions, pushes it to `GHCR`, and deploys the same image to both app servers.
+- The front Nginx layer distributes traffic to both production app servers with round robin.
 - Production credentials stay in the GitHub Actions `production` environment secrets.
 
 ## Secrets Policy

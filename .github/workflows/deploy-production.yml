@@ -15,9 +15,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-image:
     runs-on: ubuntu-latest
     environment: production
+    outputs:
+      image_name: ${{ steps.image-meta.outputs.image_name }}
+      image_tag: ${{ steps.image-meta.outputs.image_tag }}
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/busanconnect-frontend
       IMAGE_TAG: ${{ github.sha }}
@@ -47,6 +50,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Capture image metadata
+        id: image-meta
+        run: |
+          echo "image_name=${IMAGE_NAME}" >> "${GITHUB_OUTPUT}"
+          echo "image_tag=${IMAGE_TAG}" >> "${GITHUB_OUTPUT}"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -69,20 +78,29 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  deploy-app-1:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build-image
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Start SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
 
-      - name: Deploy on OCI
+      - name: Deploy on app server 1
         env:
-          OCI_HOST: ${{ secrets.OCI_HOST }}
-          OCI_PORT: ${{ secrets.OCI_PORT }}
-          OCI_USER: ${{ secrets.OCI_USER }}
+          OCI_HOST: ${{ secrets.OCI_APP_1_HOST }}
+          OCI_PORT: ${{ secrets.OCI_APP_1_PORT }}
+          OCI_USER: ${{ secrets.OCI_APP_1_USER }}
           FORGE_API_KEY: ${{ secrets.VITE_FRONTEND_FORGE_API_KEY }}
           FORGE_API_URL: ${{ secrets.VITE_FRONTEND_FORGE_API_URL }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          IMAGE_NAME: ${{ needs.build-image.outputs.image_name }}
+          IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
         run: |
           if [ -n "${FORGE_API_URL}" ]; then
             DEPLOY_FORGE_URL="${FORGE_API_URL}"
@@ -101,5 +119,51 @@ jobs:
             export IMAGE_REF='${IMAGE_NAME}:${IMAGE_TAG}'
             export CONTAINER_NAME='busan-visited-frontend'
             export HOST_PORT='80'
+            export HEALTHCHECK_URL='http://127.0.0.1:80/'
+            /bin/sh -s
+          " < scripts/deploy-remote.sh
+
+  deploy-app-2:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build-image
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
+
+      - name: Deploy on app server 2
+        env:
+          OCI_HOST: ${{ secrets.OCI_APP_2_HOST }}
+          OCI_PORT: ${{ secrets.OCI_APP_2_PORT }}
+          OCI_USER: ${{ secrets.OCI_APP_2_USER }}
+          FORGE_API_KEY: ${{ secrets.VITE_FRONTEND_FORGE_API_KEY }}
+          FORGE_API_URL: ${{ secrets.VITE_FRONTEND_FORGE_API_URL }}
+          IMAGE_NAME: ${{ needs.build-image.outputs.image_name }}
+          IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
+        run: |
+          if [ -n "${FORGE_API_URL}" ]; then
+            DEPLOY_FORGE_URL="${FORGE_API_URL}"
+          else
+            DEPLOY_FORGE_URL="https://forge.butterfly-effect.dev"
+          fi
+
+          KEY_B64="$(printf '%s' "${FORGE_API_KEY}" | base64 -w 0)"
+          URL_B64="$(printf '%s' "${DEPLOY_FORGE_URL}" | base64 -w 0)"
+          SSH_OPTIONS="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=15"
+
+          ssh ${SSH_OPTIONS} -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" "
+            set -eu
+            export VITE_FRONTEND_FORGE_API_KEY=\$(printf '%s' '${KEY_B64}' | base64 -d)
+            export VITE_FRONTEND_FORGE_API_URL=\$(printf '%s' '${URL_B64}' | base64 -d)
+            export IMAGE_REF='${IMAGE_NAME}:${IMAGE_TAG}'
+            export CONTAINER_NAME='busan-visited-frontend'
+            export HOST_PORT='80'
+            export HEALTHCHECK_URL='http://127.0.0.1:80/'
             /bin/sh -s
           " < scripts/deploy-remote.sh
