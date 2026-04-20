@@ -79,8 +79,6 @@ jobs:
           OCI_HOST: ${{ secrets.OCI_HOST }}
           OCI_PORT: ${{ secrets.OCI_PORT }}
           OCI_USER: ${{ secrets.OCI_USER }}
-          GHCR_USERNAME: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FORGE_API_KEY: ${{ secrets.VITE_FRONTEND_FORGE_API_KEY }}
           FORGE_API_URL: ${{ secrets.VITE_FRONTEND_FORGE_API_URL }}
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
@@ -94,16 +92,12 @@ jobs:
 
           KEY_B64="$(printf '%s' "${FORGE_API_KEY}" | base64 -w 0)"
           URL_B64="$(printf '%s' "${DEPLOY_FORGE_URL}" | base64 -w 0)"
-          GHCR_USER_B64="$(printf '%s' "${GHCR_USERNAME}" | base64 -w 0)"
-          GHCR_TOKEN_B64="$(printf '%s' "${GHCR_TOKEN}" | base64 -w 0)"
           SSH_OPTIONS="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=15"
 
           ssh ${SSH_OPTIONS} -p "${OCI_PORT}" "${OCI_USER}@${OCI_HOST}" "
             set -eu
             export VITE_FRONTEND_FORGE_API_KEY=\$(printf '%s' '${KEY_B64}' | base64 -d)
             export VITE_FRONTEND_FORGE_API_URL=\$(printf '%s' '${URL_B64}' | base64 -d)
-            export GHCR_USERNAME=\$(printf '%s' '${GHCR_USER_B64}' | base64 -d)
-            export GHCR_TOKEN=\$(printf '%s' '${GHCR_TOKEN_B64}' | base64 -d)
             export IMAGE_REF='${IMAGE_NAME}:${IMAGE_TAG}'
             export CONTAINER_NAME='busan-visited-frontend'
             export HOST_PORT='80'
